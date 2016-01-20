@@ -6541,7 +6541,7 @@ public Action:OnGetMaxHealth(client, &maxHealth)
 	return Plugin_Continue;
 }
 
-stock bool:InsertCond(iClient, TFCond:iCond, Float:flDuration = TFCondDuration_Infinite)
+stock bool:InsertCond(iClient, TFCond:iCond, Float:flDuration=TFCondDuration_Infinite)
 {
     if(!TF2_IsPlayerInCondition(iClient, iCond))
     {
