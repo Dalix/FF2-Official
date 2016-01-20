@@ -6151,6 +6151,12 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 						{
 							damage=(Pow(float(BossHealthMax[boss]), 0.74074)+512.0-(Marketed[client]/128.0*float(BossHealthMax[boss])))/3.0;
 							damagetype|=DMG_CRIT;
+							
+							
+							if(RemoveCond(attacker, TFCond_Parachute))
+							{
+								damage*=0.67;
+							}
 
 							if(Marketed[client]<5)
 							{
@@ -6533,6 +6539,26 @@ public Action:OnGetMaxHealth(client, &maxHealth)
 		return Plugin_Changed;
 	}
 	return Plugin_Continue;
+}
+
+stock bool:InsertCond(iClient, TFCond:iCond, Float:flDuration = TFCondDuration_Infinite)
+{
+    if(!TF2_IsPlayerInCondition(iClient, iCond))
+    {
+        TF2_AddCondition(iClient, iCond, flDuration);
+        return true;
+    }
+    return false;
+}
+
+stock bool:RemoveCond(iClient, TFCond:iCond)
+{
+    if(TF2_IsPlayerInCondition(iClient, iCond))
+    {
+        TF2_RemoveCondition(iClient, iCond);
+        return true;
+    }
+    return false;
 }
 
 stock GetClientCloakIndex(client)
