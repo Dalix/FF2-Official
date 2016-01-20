@@ -2481,14 +2481,14 @@ SearchForItemPacks()
     }
 	
     if(!foundAmmo)
-	{
-		SpawnRandomAmmo();
-	}
+    {
+    	SpawnRandomAmmo();
+    }
 	
     if(!foundHealth)
-	{
-		SpawnRandomHealth();
-	}
+    {
+    	SpawnRandomHealth();
+    }
 }
 
 SpawnRandomAmmo()
