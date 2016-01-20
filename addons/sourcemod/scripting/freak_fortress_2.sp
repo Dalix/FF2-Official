@@ -2432,10 +2432,107 @@ public Action:OnRoundStart(Handle:event, const String:name[], bool:dontBroadcast
 			AcceptEntityInput(entity, "Disable");
 		}
 	}
+	
+	SearchForItemPacks();
 
 	healthcheckused=0;
 	firstBlood=true;
 	return Plugin_Continue;
+}
+
+SearchForItemPacks()
+{
+    new bool:foundAmmo=false, bool:foundHealth=false;
+	
+    new ent=-1;
+    while((ent=FindEntityByClassname2(ent, "item_ammopack_full"))!=-1)
+    {
+        foundAmmo=true;
+    }
+	
+    ent=-1;
+    while((ent=FindEntityByClassname2(ent, "item_ammopack_medium"))!=-1)
+    {
+        foundAmmo = true;
+    }
+	
+    ent=-1;
+    while((ent=FindEntityByClassname2(ent, "Item_ammopack_small"))!=-1)
+    {
+        foundAmmo=true;
+    }
+	
+    ent=-1;
+    while((ent=FindEntityByClassname2(ent, "item_healthkit_small"))!=-1)
+    {
+        foundHealth=true;
+    }
+	
+    ent=-1;
+    while((ent=FindEntityByClassname2(ent, "item_healthkit_medium"))!=-1)
+    {
+        foundHealth=true;
+    }
+	
+    ent=-1;
+    while((ent=FindEntityByClassname2(ent, "item_healthkit_full"))!=-1)
+    {
+        foundHealth=true;
+    }
+	
+    if(!foundAmmo)
+	{
+		SpawnRandomAmmo();
+	}
+	
+    if(!foundHealth)
+	{
+		SpawnRandomHealth();
+	}
+}
+
+SpawnRandomAmmo()
+{
+    new iEnt=MaxClients+1;
+    decl Float:vPos[3];
+    decl Float:vAng[3];
+	
+    while((iEnt=FindEntityByClassname2(iEnt, "info_player_teamspawn"))!=-1)
+    {
+        if(GetRandomInt(0, 4))
+        {
+            continue;
+        }
+
+        GetEntPropVector(iEnt, Prop_Send, "m_vecOrigin", vPos);
+        GetEntPropVector(iEnt, Prop_Send, "m_angRotation", vAng);
+
+        new iEnt2=!GetRandomInt(0, 3) ? CreateEntityByName("item_ammopack_medium") : CreateEntityByName("item_ammopack_small");
+        TeleportEntity(iEnt2, vPos, vAng, NULL_VECTOR);
+        DispatchSpawn(iEnt2);
+    }
+}
+
+SpawnRandomHealth()
+{
+    new iEnt=MaxClients+1;
+    decl Float:vPos[3];
+    decl Float:vAng[3];
+	
+    while((iEnt=FindEntityByClassname2(iEnt, "info_player_teamspawn"))!=-1)
+    {
+        if(GetRandomInt(0, 4))
+        {
+            continue;
+        }
+
+        GetEntPropVector(iEnt, Prop_Send, "m_vecOrigin", vPos);
+        GetEntPropVector(iEnt, Prop_Send, "m_angRotation", vAng);
+
+        new iEnt2=!GetRandomInt(0, 3) ? CreateEntityByName("item_healthkit_medium") : CreateEntityByName("item_healthkit_small");
+        TeleportEntity(iEnt2, vPos, vAng, NULL_VECTOR);
+        DispatchSpawn(iEnt2);
+    }
 }
 
 public Action:Timer_EnableCap(Handle:timer)
